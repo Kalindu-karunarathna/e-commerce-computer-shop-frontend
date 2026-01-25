@@ -13,7 +13,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='w-full h-screen'>
+      <div className='w-full h-screen bg-primary'>
          <Routes path="/">
               <Route path = "/" element={<HomePage/>}/>
               <Route path = "login" element={<LoginPage/>}/>
