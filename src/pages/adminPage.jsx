@@ -8,15 +8,15 @@ export default function AdminPage(){
 
 
             <div className="w-[300px] h-full bg-secondary">
-                <div className="w-full h-[100px] flex items-center ">
+                <div className="w-full h-[100px] flex items-center border-[5px] border-secondary rounded-2xl bg-primary ">
                     <img src="/logo.png" alt="logo" className="h-full" />
                     <h1 className="text-3xl">Admin Pannel</h1>
                 </div>
-                <div className="w-full h-[400px] flex flex-col">
-                    <Link to="/admin" className="flex items-center "><LuClipboardList className="text-accent" />Orders</Link>
-                    <Link to="/admin/products" className="flex items-center "><LuBoxes className="text-accent"/>Products</Link>
-                    <Link to="/admin/users" className="flex items-center "><LuUsers className="text-accent"/>Users</Link>
-                    <Link to="/admin/reviews" className="flex items-center "><LuMessageSquareMore className="text-accent"/>Reviews</Link>
+                <div className="w-full h-[400px] flex flex-col mt-[40px]">
+                    <Link to="/admin" className="flex items-center mt-[30px] ml-[30px]"><LuClipboardList className="text-accent" />Orders</Link>
+                    <Link to="/admin/products" className="flex items-center mt-[30px] ml-[30px]"><LuBoxes className="text-accent"/>Products</Link>
+                    <Link to="/admin/users" className="flex items-center mt-[30px] ml-[30px]"><LuUsers className="text-accent"/>Users</Link>
+                    <Link to="/admin/reviews" className="flex items-center mt-[30px] ml-[30px]"><LuMessageSquareMore className="text-accent"/>Reviews</Link>
                 </div>
             </div>
 
