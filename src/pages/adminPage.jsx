@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from 'react-router-dom'
+import { LuClipboardList,LuBoxes,LuUsers,LuMessageSquareMore } from "react-icons/lu";
 
 
 export default function AdminPage(){
@@ -12,10 +13,10 @@ export default function AdminPage(){
                     <h1 className="text-3xl">Admin Pannel</h1>
                 </div>
                 <div className="w-full h-[400px] flex flex-col">
-                    <Link to="/admin">Orders</Link>
-                    <Link to="/admin/products">Products</Link>
-                    <Link to="/admin/users">Users</Link>
-                    <Link to="/admin/reviews">Reviews</Link>
+                    <Link to="/admin" className="flex items-center "><LuClipboardList className="text-accent" />Orders</Link>
+                    <Link to="/admin/products" className="flex items-center "><LuBoxes className="text-accent"/>Products</Link>
+                    <Link to="/admin/users" className="flex items-center "><LuUsers className="text-accent"/>Users</Link>
+                    <Link to="/admin/reviews" className="flex items-center "><LuMessageSquareMore className="text-accent"/>Reviews</Link>
                 </div>
             </div>
 
