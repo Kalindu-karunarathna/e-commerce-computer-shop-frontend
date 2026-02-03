@@ -1,6 +1,30 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 
 export default function LoginPage(){
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+
+    async function login(){
+        console.log("login button clicked")
+        console.log("email : ",email)
+        console.log("password : ",password)
+
+        try{
+            const res = await axios.post("http://localhost:3000/users/login",{
+                    email : email,
+                    password : password,
+                });
+                console.log(res.data);
+        }catch(err){
+            console.log("error during login : ")
+            console.log(err);
+        }
+    }
+
+
     return(
         <div className="w-full h-screen bg-[url('/bg-login1.jpg')] bg-center bg-cover bg-no-repeat flex">
 
@@ -48,7 +72,11 @@ export default function LoginPage(){
                             <div>
                                 <label for="email" className="block text-sm/6 font-medium text-gray-100">Email address</label>
                                 <div className="mt-2">
-                                    <input id="email" type="email" placeholder="enter your email" name="email" required autocomplete="email" className="block p w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-350 focus:outline-2 focus:-outline-offset-2 focus:outline-secondary sm:text-sm/6" />
+                                    <input 
+                                        onChange={(e)=>{
+                                            setEmail(e.target.value)
+                                        }}
+                                        id="email" type="email" placeholder="enter your email" name="email" required autocomplete="email" className="block p w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-350 focus:outline-2 focus:-outline-offset-2 focus:outline-secondary sm:text-sm/6" />
                                 </div>
                             </div>
 
@@ -56,16 +84,20 @@ export default function LoginPage(){
                                 <div className="flex items-center justify-between">
                                     <label for="password" className="block text-sm/6 font-medium text-gray-100">Password</label>
                                     <div className="text-sm">
-                                        <Link to="forgot-password" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</Link>
+                                        <Link to="/forgot-password" className="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</Link>
                                     </div>
                                 </div>
                                 <div className="mt-2">
-                                    <input id="password" type="password" placeholder="enter your password" name="password" required autocomplete="current-password" className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-350 focus:outline-2 focus:-outline-offset-2 focus:outline-secondary sm:text-sm/6" />
+                                    <input
+                                        onChange={(e)=>{
+                                            setPassword(e.target.value)
+                                        }}
+                                        id="password" type="password" placeholder="enter your password" name="password" required autocomplete="current-password" className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-350 focus:outline-2 focus:-outline-offset-2 focus:outline-secondary sm:text-sm/6" />
                                 </div>
                             </div>
 
                             <div>
-                                <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Log in</button>
+                                <button onClick={login} type="button" className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Log in</button>
                             </div>
                         </form>
 
