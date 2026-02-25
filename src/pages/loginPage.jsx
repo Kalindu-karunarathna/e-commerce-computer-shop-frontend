@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 export default function LoginPage(){
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
+    const navigate = useNavigate()
 
     async function login(){
         console.log("login button clicked")
@@ -19,7 +20,18 @@ export default function LoginPage(){
                     password : password,
                 });
                 console.log(res.data);
-                toast.success("login successful! welcome..")
+
+                 toast.success("login successful! welcome..")
+
+                if(res.data.role=="admin"){
+                   navigate("/admin")
+                }
+                else{
+                    navigate("/")
+                }
+
+               
+
         }catch(err){
             console.log("error during login : ")
             console.log(err);
