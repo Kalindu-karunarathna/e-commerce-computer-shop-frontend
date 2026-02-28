@@ -1,32 +1,37 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AdminAddProduct(){
     const [ productId,setproductId] = useState("");
     const [name,setname] = useState("");
     const [altNames,setaltNames] = useState("")
     const [description,setdescription] = useState("")
-    const [price,setprice]=useState("0")
-    const [labelPrice,setlabelPrice] = useState("0")
+    const [price,setprice]=useState(0)
+    const [labelPrice,setlabelPrice] = useState(0)
     const [images,setimages] = useState("")
     const [category,setcategory]=useState("")
     const [brand,setbrand]=useState("")
     const [model,setmodel]=useState("")
-    const [stock,setstock]=useState("0")
-    const [isAvailable,setisAvailable]=useState("false")
+    const [stock,setstock]=useState(0)
+    const [isAvailable,setisAvailable]=useState(false)
     const navigate = useNavigate();
 
-    async function addProduct(){
+    async function addProduct(e){
+         e.preventDefault(); 
 
         const token = localStorage.getItem("token");
+
+        //later use useEffect to block the normal users see the add product page
+
         if(token==null){
             toast.error("you must be log in as admin to add products!");
             navigate("/login");
             return
         }
 
-        if(productId==""||name==""||description==""||price==""||category==""||brand==""||model==""){
+        if(!productId.trim() || !name.trim() || !description.trim() || !price || !category || !brand.trim() || !model.trim()){
             toast.error("plese fill all required fields!")
             return
         }
@@ -40,13 +45,13 @@ export default function AdminAddProduct(){
                 name : name,
                 altNames : altNamesInArray,
                 description : description,
-                price : price,
-                labelPrice : labelPrice,
+                price : Number(price),
+                labelPrice : Number(labelPrice),
                 images : imagesInArray,
                 category : category,
                 brand : brand,
                 model : model,
-                stock : stock,
+                stock : Number(stock),
                 isAvailable : isAvailable
             },{
                 headers : {
@@ -67,7 +72,7 @@ export default function AdminAddProduct(){
     return(
         <div className="w-full min-h-screen flex justify-center items-center">
           
-            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%] shadow-md">
+            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%] shadow-md" onSubmit={addProduct}>
                 <div className="max-w-5xl mx-auto space-y-8">
 
                     <h2 className="text-2xl font-bold text-gray-800 mb-18">
@@ -195,6 +200,7 @@ export default function AdminAddProduct(){
                             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
                             outline-none transition"
                             >
+                            <option value="">Select Category</option>    
                             <option value={"CPU"}>CPU</option>
                             <option value={"Graphics Cards"}>Graphics Cards</option>
                             <option value={"Motherboards"}>Motherboards</option>
@@ -265,7 +271,7 @@ export default function AdminAddProduct(){
                             </label>
                             <select
                             value={isAvailable}
-                            onChange={(e)=>{setisAvailable(e.target.value)}}
+                            onChange={(e)=>{setisAvailable(e.target.value === "true")}}
                             className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 
                             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
                             outline-none transition"
