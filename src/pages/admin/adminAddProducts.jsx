@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminAddProduct(){
     const [ productId,setproductId] = useState("");
@@ -14,15 +15,62 @@ export default function AdminAddProduct(){
     const [model,setmodel]=useState("")
     const [stock,setstock]=useState("0")
     const [isAvailable,setisAvailable]=useState("false")
+    const navigate = useNavigate();
+
+    async function addProduct(){
+
+        const token = localStorage.getItem("token");
+        if(token==null){
+            toast.error("you must be log in as admin to add products!");
+            navigate("/login");
+            return
+        }
+
+        if(productId==""||name==""||description==""||price==""||category==""||brand==""||model==""){
+            toast.error("plese fill all required fields!")
+            return
+        }
+
+        try{
+            const altNamesInArray = altNames.split(",")
+            const imagesInArray = images.split(",")
+
+            await axios.post(import.meta.env.VITE_BACKEND_URL+"/products/",{
+                productId : productId,
+                name : name,
+                altNames : altNamesInArray,
+                description : description,
+                price : price,
+                labelPrice : labelPrice,
+                images : imagesInArray,
+                category : category,
+                brand : brand,
+                model : model,
+                stock : stock,
+                isAvailable : isAvailable
+            },{
+                headers : {
+                    Authorization : "Bearer "+token
+                }
+            })
+            toast.success("product added successfully!");
+            navigate("/admin/products");
+
+        }catch(err){
+            console.log("error in adding product : ")
+            console.log(err);
+            toast.error("error in adding product. please try again!")
+        }
+    }
 
 
     return(
         <div className="w-full min-h-screen flex justify-center items-center">
           
-            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%]">
+            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%] shadow-md">
                 <div className="max-w-5xl mx-auto space-y-8">
 
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-18">
                     Add New Product
                     </h2>
 
