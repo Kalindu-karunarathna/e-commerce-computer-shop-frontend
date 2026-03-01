@@ -9,7 +9,7 @@ export default function AdminPage(){
         <div className="w-full h-full flex max-h-full bg-secondary">
 
 
-            <div className="w-[300px] h-full bg-secondary">
+            <div className="w-[200px] h-full bg-secondary">
                 <div className="w-full h-[100px] flex items-center border-[5px] border-secondary rounded-2xl bg-primary ">
                     <img src="/logo.png" alt="logo" className="h-full" />
                     <h1 className="text-3xl">Admin Pannel</h1>
@@ -23,7 +23,7 @@ export default function AdminPage(){
             </div>
 
 
-            <div className="w-[calc(100%-300px)] h-full bg-primary max-h-full overflow-y-auto border-[5px] border-secondary rounded-2xl ">
+            <div className="w-[calc(100%-200px)] h-full bg-primary max-h-full overflow-y-auto border-[5px] border-secondary rounded-2xl ">
                <Routes>
                     <Route path="/" element={<h1>Orders</h1>}/>
                     <Route path="/products" element={<AdminProductPage/>}/>

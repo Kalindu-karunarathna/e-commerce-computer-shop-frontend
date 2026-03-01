@@ -2,6 +2,7 @@ import {Link} from "react-router-dom"
 import { HiPlus } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function AdminProductPage(){
 
@@ -11,7 +12,7 @@ export default function AdminProductPage(){
         .then((response)=>{
             setproducts(response.data);
         });
-    });
+    },[]);
 
     
     return(
@@ -49,6 +50,7 @@ export default function AdminProductPage(){
                 <th className="px-6 py-4">Model</th>
                 <th className="px-6 py-4">Stock</th>
                 <th className="px-6 py-4">Availability</th>
+                <th className="px-6 py-4">Action</th>
               </tr>
             </thead>
 
@@ -68,6 +70,19 @@ export default function AdminProductPage(){
                                     <td className="px-6 py-4">{item.model}</td>
                                     <td className="px-6 py-4">{item.stock}</td>
                                     <td className="px-6 py-4">{item.isAvailable}</td>
+                                    <td className="px-6 py-4"><button className="px-3 py-1 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 active:bg-red-800 transition"
+                                    onClick={
+                                        () => {
+                                            const token = localStorage.getItem("token");
+                                             axios.delete(import.meta.env.VITE_BACKEND_URL+"/products/"+item.productId,{
+                                                headers:{Authorization : "Bearer "+token}
+                                             }).then(()=>{toast.success("product deleted succesfully!")}
+                                             ).catch((err) => {toast.error("Failed to delete product");
+                                                                console.log(err);
+                                             }
+                                            );
+                                        }}>Delete</button>
+                                    </td>
                                 </tr>
                             );
                         }
