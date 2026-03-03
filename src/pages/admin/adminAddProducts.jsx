@@ -2,6 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import UploadFile from "../../utils/mediaUpload";
+
 
 export default function AdminAddProduct(){
     const [ productId,setproductId] = useState("");
@@ -10,7 +12,7 @@ export default function AdminAddProduct(){
     const [description,setdescription] = useState("")
     const [price,setprice]=useState(0)
     const [labelPrice,setlabelPrice] = useState(0)
-    const [images,setimages] = useState("")
+    const [images,setimages] = useState([])
     const [category,setcategory]=useState("")
     const [brand,setbrand]=useState("")
     const [model,setmodel]=useState("")
@@ -31,6 +33,28 @@ export default function AdminAddProduct(){
             return
         }
 
+        console.log(images);
+
+        const imagePromises = []
+
+        for(let i=0;i<images.length;i++){
+            const promise = UploadFile(images[i]);
+            imagePromises.push(promise);
+        }
+           
+
+        let imageFiles;
+
+        try {
+            imageFiles = await Promise.all(imagePromises);
+        } catch (err) {
+            toast.error("Error uploading images.. please try again.");
+            console.log(err);
+            return; // STOP execution
+        }
+
+        console.log(imageFiles);
+ 
         if(!productId.trim() || !name.trim() || !description.trim() || !price || !category || !brand.trim() || !model.trim()){
             toast.error("plese fill all required fields!")
             return
@@ -38,7 +62,7 @@ export default function AdminAddProduct(){
 
         try{
             const altNamesInArray = altNames.split(",")
-            const imagesInArray = images.split(",")
+
 
             await axios.post(import.meta.env.VITE_BACKEND_URL+"/products/",{
                 productId : productId,
@@ -47,7 +71,7 @@ export default function AdminAddProduct(){
                 description : description,
                 price : Number(price),
                 labelPrice : Number(labelPrice),
-                images : imagesInArray,
+                images : imageFiles,
                 category : category,
                 brand : brand,
                 model : model,
@@ -178,9 +202,9 @@ export default function AdminAddProduct(){
                             Image Links
                             </label>
                             <input
-                            type="text"
-                            value={images}
-                            onChange={(e)=>{setimages(e.target.value)}}
+                            type="file"
+                            multiple={true}
+                            onChange={(e) => setimages(Array.from(e.target.files))}
                             placeholder="https://example.com/image1.jpg"
                             className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 
                             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
