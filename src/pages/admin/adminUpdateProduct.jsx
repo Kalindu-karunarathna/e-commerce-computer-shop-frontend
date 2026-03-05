@@ -19,6 +19,7 @@ export default function AdminUpdateProduct(){
     const [model,setmodel]=useState(location.state.model)
     const [stock,setstock]=useState(location.state.stock)
     const [isAvailable,setisAvailable]=useState(location.state.isAvailable)
+     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     if(!location.state){
@@ -38,6 +39,12 @@ export default function AdminUpdateProduct(){
             return
         }
 
+         if(!productId.trim() || !name.trim() || !description.trim() || price==="" || !category || !brand.trim() || !model.trim()){
+            toast.error("plese fill all required fields!")
+            return
+        }
+
+        setLoading(true);
        
 
         const imagePromises = []
@@ -55,21 +62,21 @@ export default function AdminUpdateProduct(){
         } catch (err) {
             toast.error("Error uploading images.. please try again.");
             console.log(err);
+            setLoading(false);
             return; // STOP execution
         }
         
         
         if(!imageFiles||imageFiles.length===0){
-            imageFiles=location.state.imageFiles;
+            imageFiles=location.state.images;
         }
  
-        if(!productId.trim() || !name.trim() || !description.trim() || price==="" || !category || !brand.trim() || !model.trim()){
-            toast.error("plese fill all required fields!")
-            return
-        }
+       
 
         try{
             const altNamesInArray = altNames.split(",")
+                                        .map(name => name.trim())
+                                        .filter(name => name !== "");
 
 
             await axios.put(import.meta.env.VITE_BACKEND_URL+"/products/"+productId,{
@@ -97,6 +104,8 @@ export default function AdminUpdateProduct(){
             console.log("error in updating product : ")
             console.log(err);
             toast.error("error in updating product. please try again!")
+        }finally{
+            setLoading(false);
         }
     }
 
@@ -302,7 +311,7 @@ export default function AdminUpdateProduct(){
                             Availability
                             </label>
                             <select
-                            value={isAvailable}
+                            value={isAvailable ? "true" : "false"}
                             onChange={(e)=>{setisAvailable(e.target.value === "true")}}
                             className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 
                             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
@@ -323,10 +332,11 @@ export default function AdminUpdateProduct(){
                         </Link>
                         <button
                             type="submit"
-                            className="rounded-xl bg-indigo-600 px-8 py-3 text-white font-semibold 
-                            shadow-md hover:bg-indigo-700 hover:shadow-lg 
-                            transition duration-200">
-                            Update Product
+                            disabled={loading} // disable while loading
+                            className={`rounded-xl px-8 py-3 text-white font-semibold shadow-md transition duration-200
+                                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg"}`}
+                        >
+                            {loading ? "Saving..." : "Update Product"}
                         </button>
                     </div>
 
