@@ -74,8 +74,10 @@ export default function AdminProductPage(){
                                                     <td className="px-6 py-4">{item.brand}</td>
                                                     <td className="px-6 py-4">{item.model}</td>
                                                     <td className="px-6 py-4">{item.stock}</td>
-                                                    <td className="px-6 py-4">{item.isAvailable}</td>
-                                                    <td className="px-6 py-4"><ProductDeleteButton productId={item.productId} reload={()=>{setloaded(false)}}/>
+                                                    <td className="px-6 py-4">{item.isAvailable?"Available":"Unavailable"}</td>
+                                                    <td className="px-6 py-4 flex gap-2">
+                                                        <Link to="/admin/update-product" className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 active:bg-blue-800 transition" state={item}>edit</Link>
+                                                        <ProductDeleteButton productId={item.productId} reload={()=>{setloaded(false)}}/>
                                                     </td>
                                                 </tr>
                                             );

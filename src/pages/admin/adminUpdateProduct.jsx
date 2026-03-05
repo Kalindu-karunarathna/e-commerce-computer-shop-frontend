@@ -1,27 +1,31 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import UploadFile from "../../utils/mediaUpload";
 
 
-export default function AdminAddProduct(){
-    const [ productId,setproductId] = useState("");
-    const [name,setname] = useState("");
-    const [altNames,setaltNames] = useState("")
-    const [description,setdescription] = useState("")
-    const [price,setprice]=useState(0)
-    const [labelPrice,setlabelPrice] = useState(0)
+export default function AdminUpdateProduct(){
+    const location = useLocation();
+    const [ productId,setproductId] = useState(location.state.productId);
+    const [name,setname] = useState(location.state.name);
+    const [altNames,setaltNames] = useState(location.state.altNames.join(","))
+    const [description,setdescription] = useState(location.state.description)
+    const [price,setprice]=useState(location.state.price)
+    const [labelPrice,setlabelPrice] = useState(location.state.labelPrice)
     const [images,setimages] = useState([])
-    const [category,setcategory]=useState("")
-    const [brand,setbrand]=useState("")
-    const [model,setmodel]=useState("")
-    const [stock,setstock]=useState(0)
-    const [isAvailable,setisAvailable]=useState(false)
-    const [loading, setLoading] = useState(false);
+    const [category,setcategory]=useState(location.state.category)
+    const [brand,setbrand]=useState(location.state.brand)
+    const [model,setmodel]=useState(location.state.model)
+    const [stock,setstock]=useState(location.state.stock)
+    const [isAvailable,setisAvailable]=useState(location.state.isAvailable)
     const navigate = useNavigate();
 
-    async function addProduct(e){
+    if(!location.state){
+        window.location.href="/admin/products"
+    }
+
+    async function updateProduct(e){
          e.preventDefault(); 
 
         const token = localStorage.getItem("token");
@@ -33,16 +37,10 @@ export default function AdminAddProduct(){
             navigate("/login");
             return
         }
- 
-        if(!productId.trim() || !name.trim() || !description.trim() || !price || !category || !brand.trim() || !model.trim()){
-            toast.error("plese fill all required fields!")
-            return
-        }
 
-         setLoading(true);
+       
 
-
-         const imagePromises = []
+        const imagePromises = []
 
         for(let i=0;i<images.length;i++){
             const promise = UploadFile(images[i]);
@@ -57,17 +55,24 @@ export default function AdminAddProduct(){
         } catch (err) {
             toast.error("Error uploading images.. please try again.");
             console.log(err);
-            setLoading(false);
             return; // STOP execution
         }
-
-        console.log(imageFiles); 
+        
+        
+        if(!imageFiles||imageFiles.length===0){
+            imageFiles=location.state.imageFiles;
+        }
+ 
+        if(!productId.trim() || !name.trim() || !description.trim() || price==="" || !category || !brand.trim() || !model.trim()){
+            toast.error("plese fill all required fields!")
+            return
+        }
 
         try{
             const altNamesInArray = altNames.split(",")
 
 
-            await axios.post(import.meta.env.VITE_BACKEND_URL+"/products/",{
+            await axios.put(import.meta.env.VITE_BACKEND_URL+"/products/"+productId,{
                 productId : productId,
                 name : name,
                 altNames : altNamesInArray,
@@ -85,15 +90,13 @@ export default function AdminAddProduct(){
                     Authorization : "Bearer "+token
                 }
             })
-            toast.success("product added successfully!");
+            toast.success("product updated successfully!");
             navigate("/admin/products");
 
         }catch(err){
-            console.log("error in adding product : ")
+            console.log("error in updating product : ")
             console.log(err);
-            toast.error("error in adding product. please try again!")
-        }finally{
-             setLoading(false);
+            toast.error("error in updating product. please try again!")
         }
     }
 
@@ -101,11 +104,11 @@ export default function AdminAddProduct(){
     return(
         <div className="w-full min-h-screen flex justify-center items-center">
           
-            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%] shadow-md" onSubmit={addProduct}>
+            <form className="bg-white p-6 sm:p-10 mt-8 mb-8 rounded-lg w-[68%] shadow-md" onSubmit={updateProduct}>
                 <div className="max-w-5xl mx-auto space-y-8">
 
                     <h2 className="text-2xl font-bold text-gray-800 mb-18">
-                    Add New Product
+                    Update Product
                     </h2>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -116,9 +119,9 @@ export default function AdminAddProduct(){
                             Product ID
                             </label>
                             <input
+                            disabled
                             type="text"
                             value={productId}
-                            onChange={(e)=>{setproductId(e.target.value)}}
                             className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-2 
                             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
                             outline-none transition"
@@ -320,11 +323,10 @@ export default function AdminAddProduct(){
                         </Link>
                         <button
                             type="submit"
-                            disabled={loading} // disable while loading
-                            className={`rounded-xl px-8 py-3 text-white font-semibold shadow-md transition duration-200
-                                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg"}`}
-                        >
-                            {loading ? "Saving..." : "Save Product"}
+                            className="rounded-xl bg-indigo-600 px-8 py-3 text-white font-semibold 
+                            shadow-md hover:bg-indigo-700 hover:shadow-lg 
+                            transition duration-200">
+                            Update Product
                         </button>
                     </div>
 
