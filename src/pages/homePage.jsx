@@ -1,5 +1,6 @@
 import Header from "../components/header"
 import { Route, Routes } from 'react-router-dom'
+import ProductPage from "./productPage"
 
 
 export default function HomePage(){
@@ -9,7 +10,7 @@ export default function HomePage(){
            <div className="w-full min-h-[calc(100%-100px)] bg-primary">
                 <Routes>
                     <Route path="/" element={<h1>Home page</h1>}/>
-                    <Route path="/products" element={<h1>Products</h1>}/>
+                    <Route path="/products" element={<ProductPage/>}/>
                     <Route path="/about" element={<h1>about</h1>}/>
                     <Route path="/contact" element={<h1>contacts</h1>}/>
                     <Route path="/*" element={<h1>page not found</h1>}/>

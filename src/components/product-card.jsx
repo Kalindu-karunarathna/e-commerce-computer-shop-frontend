@@ -1,57 +1,47 @@
-import { useState } from "react"
+export default function ProductCard(props){
 
-export default function Test(){
+    const product = props.product;
 
-const [count,setcount] = useState(0)
-const [onOff,onOffFunc] = useState("🌞")
+    return(
+       <div className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 overflow-hidden flex flex-col">
+  
+        {/* Product Image */}
+        <div className="w-full h-48 sm:h-56 md:h-64 lg:h-72 bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            />
+        </div>
 
+        {/* Product Info */}
+        <div className="p-3 sm:p-4 flex flex-col flex-grow">
 
-return(
-<div>
-    <div className="w-[500px] h-[500px] bg-amber-200 flex justify-center items-center">
+            {/* Product Name */}
+            <h1 className="text-sm sm:text-md font-semibold text-gray-800 line-clamp-2">
+            {product.name}
+            </h1>
 
-        <button className="w-[200px] h-[70px] bg-amber-100" 
-        onClick={
-            ()=>{
-               setcount(count+1)
-            }
-        }>Increase</button>
-
-        <h1 className="w-[150px] h-[70px] text-center text-[40px]">{count}</h1>
-
-        <button className="w-[200px] h-[70px] bg-amber-100" 
-        onClick={
-            ()=>{
-                setcount(count-1)
-            }
-        }>Decrease</button> 
-    </div>
-
-    <div className="w-[500px] h-[500px] bg-amber-50 shadow-lg flex flex-col justify-center">
-        <span className="h-[50px] text-3xl text-bold w-full text-center">
-            {onOff}
-        </span>
-
-        <div className="w-full h-[70px] flex justify-center">
-            <button className="w-[150px] h-full bg-amber-200" onClick={
-                ()=>{
-                    onOffFunc("🌞")
+            {/* Price */}
+            <div className="w-full flex flex-col items-center mt-3 mb-3">
+                {
+                    product.labelPrice>product.price &&
+                    <h2 className="text-gray-800 decoration-gold/70 decoration-2 mr-2 line-through">
+                        LKR.{product.labelPrice.toFixed(2)}
+                    </h2>
                 }
-            }>ON</button>
+                <h2 className="text-2xl text-gray-800 font-semibold">
+                         LKR.{product.price.toFixed(2)}
+                </h2>
 
-            <button className="w-[150px] h-full bg-amber-400" onClick={
-                ()=>{
-                    onOffFunc("🌑")
-                }
-            }>OFF</button>
-        </div>    
+            </div>
 
-    </div>
+            {/* View Details Button */}
+            <button className="mt-auto bg-purple-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+            View Details
+            </button>
 
+  </div>
 </div>
-        
-)
-
-
-
+    )
 }
