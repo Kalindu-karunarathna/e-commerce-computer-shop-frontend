@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function ProductCard(props){
 
     const product = props.product;
@@ -18,7 +20,7 @@ export default function ProductCard(props){
         <div className="p-3 sm:p-4 flex flex-col flex-grow">
 
             {/* Product Name */}
-            <h1 className="text-sm sm:text-md font-semibold text-gray-800 line-clamp-2">
+            <h1 className="text-lg sm:text-md font-semibold text-gray-800 line-clamp-2">
             {product.name}
             </h1>
 
@@ -26,7 +28,7 @@ export default function ProductCard(props){
             <div className="w-full flex flex-col items-center mt-3 mb-3">
                 {
                     product.labelPrice>product.price &&
-                    <h2 className="text-gray-800 decoration-gold/70 decoration-2 mr-2 line-through">
+                    <h2 className="text-gray-800 decoration-amber-400 decoration-2 mr-2 line-through">
                         LKR.{product.labelPrice.toFixed(2)}
                     </h2>
                 }
@@ -37,11 +39,14 @@ export default function ProductCard(props){
             </div>
 
             {/* View Details Button */}
-            <button className="mt-auto bg-purple-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
-            View Details
-            </button>
+            <Link
+                to={"/overview/"+product.productId}
+                className="mt-auto bg-purple-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors text-center block"
+                >
+                View Details
+                </Link>
 
-  </div>
+    </div>
 </div>
     )
 }
