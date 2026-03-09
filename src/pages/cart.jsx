@@ -119,12 +119,12 @@ export default function CartPage(){
                     </div>
 
                     <Link 
-                        to="/checkout" 
-                        className="w-full flex justify-center items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-purple-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
-                        state={cart}
-                    >
-                        Checkout
-                    </Link>
+                    to="/checkout" 
+                    state={cart}
+                    className="w-full flex justify-center items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-purple-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
+                >
+                    Checkout
+                </Link>
 
                 </div>
 

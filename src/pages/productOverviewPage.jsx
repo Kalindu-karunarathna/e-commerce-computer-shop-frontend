@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Loader from "../components/loader";
 import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
@@ -9,6 +9,7 @@ import { addToCart, getCart } from "../utils/cart";
 
 export default function ProductOverview(){
 
+    const navigate = useNavigate();
     const params = useParams();
     const [product,setproduct] = useState(null)
     const [status,setstatus]=useState("loading") //loading,error,success
@@ -77,7 +78,16 @@ export default function ProductOverview(){
 
                             {/* Buy Now Button */}
                             <button className="flex-1 bg-white text-accent px-6 py-3 rounded-lg text-sm font-medium border border-accent shadow-md hover:bg-accent hover:text-white hover:shadow-lg transition-all duration-200 cursor-pointer"
-                            onClick={()=>{console.log(getCart())}}>
+                            onClick={()=>{
+                                navigate("/checkout",{state:[{
+                                    productId : product.productId,
+                                    name : product.name,
+                                    price : product.price,
+                                    labelPrice : product.labelPrice,
+                                    quantity : 1,
+                                    image : product.images[0]}
+                                ]})
+                            }}>
                                 Buy Now
                             </button>
                             </div>
