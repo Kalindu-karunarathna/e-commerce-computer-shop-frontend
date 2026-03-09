@@ -52,6 +52,7 @@ export function addToCart(product,quantity){
     localStorage.setItem("cart",cartString);
 }
 
-/* export function emptyCart(){
+export function emptyCart(){
+    localStorage.setItem("cart","[]");
+} 
 
-} */
