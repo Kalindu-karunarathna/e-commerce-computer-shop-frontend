@@ -8,6 +8,9 @@ export default function CheckoutPage(){
     const navigate = useNavigate();
 
     const [cart,setCart] = useState(location.state);
+    const [name,setName] = useState("");
+    const [phone,setPhone] = useState("");
+    const [address,setAddress]=useState("");
 
     useEffect(()=>{
     if(location.state==null){
@@ -21,6 +24,12 @@ export default function CheckoutPage(){
             return total + item.price * item.quantity;
         },0);
     } 
+
+    function submitOrder(){
+
+    }
+
+
 
     return(
         <div className="w-full min-h-screen bg-primary p-6 lg:p-12">
@@ -103,7 +112,62 @@ export default function CheckoutPage(){
                 {/* Order Summary */}
                 <div className="bg-white rounded-xl shadow-md p-6 h-fit">
 
-                    <h2 className="text-xl font-semibold mb-4">
+                    <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-xl m-auto">
+
+                        <h2 className="text-xl font-semibold text-gray-800 mb-6">
+                            Shipping Details
+                        </h2>
+
+                        <form className="flex flex-col gap-5">
+
+                            {/* Name */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-gray-600">
+                                    Full Name
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your full name"
+                                    value={name}
+                                    onChange={(e)=>{setName(e.target.value)}}
+                                    className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                />
+                            </div>
+
+                            {/* Phone */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-gray-600">
+                                    Phone Number
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your phone number"
+                                    value={phone}
+                                    onChange={(e)=>{setPhone(e.target.value)}}
+                                    className="border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                />
+                            </div>
+
+                            {/* Address */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-gray-600">
+                                    Address
+                                </label>
+                                <textarea
+                                    rows="3"
+                                    type="text"
+                                    value={address}
+                                    onChange={(e)=>{setAddress(e.target.value)}}
+                                    placeholder="Enter your delivery address"
+                                    className="border border-gray-200 rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                />
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <h2 className="text-xl font-semibold mb-4 mt-20">
                         Order Summary
                     </h2>
 
@@ -120,6 +184,7 @@ export default function CheckoutPage(){
                     <button 
                    
                     className="w-full flex justify-center items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-purple-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
+                    onClick={submitOrder}
                 >
                        Order Now
                     </button>
