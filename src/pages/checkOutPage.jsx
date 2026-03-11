@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-
-import { FiTrash2 } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function CheckoutPage(){
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [cart,setCart] = useState(location.state);
+    const [cart,setCart] = useState(location.state || []);
     const [name,setName] = useState("");
     const [phone,setPhone] = useState("");
     const [address,setAddress]=useState("");
@@ -27,6 +27,42 @@ export default function CheckoutPage(){
 
     function submitOrder(){
 
+        if(!name || !phone || !address){
+            toast.error("Please fill all shipping details");
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+
+        if(token==null){
+            toast.error("you must be logged in to place an order!")
+            navigate("/login");
+            return;
+        }
+
+        const orderItems=[];
+
+        cart.forEach((item)=>{
+            orderItems.push({
+                productId:item.productId,
+                quantity:item.quantity
+                })
+        });
+
+        axios.post(import.meta.env.VITE_BACKEND_URL+"/orders",{
+            name:name,
+            phone:phone,
+            address:address,
+            items:orderItems
+        },{
+            headers:{"Authorization":`Bearer ${token}`}
+        }).then(()=>{
+            toast.success("order placed successfully");
+            navigate("/orders");
+        }).catch((error)=>{
+            toast.error("error placing order");
+            console.log(error)
+        });
     }
 
 
@@ -182,7 +218,7 @@ export default function CheckoutPage(){
                     </div>
 
                     <button 
-                   
+                    type="button"
                     className="w-full flex justify-center items-center bg-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-purple-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
                     onClick={submitOrder}
                 >
