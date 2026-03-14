@@ -13,7 +13,14 @@ export default function AdminOrdersPage(){
 
     useEffect(()=>{
         if(!loaded){
-            axios.get(import.meta.env.VITE_BACKEND_URL+"/orders")
+
+            const token = localStorage.getItem("token")
+
+            axios.get(import.meta.env.VITE_BACKEND_URL+"/orders",{
+                headers:{
+                Authorization: "Bearer " + token
+            }
+            })
             .then((response)=>{
             setOrders(response.data);
             setloaded(true);
@@ -31,12 +38,8 @@ export default function AdminOrdersPage(){
                     {/* Header */}
                     <div className="px-6 py-4 border-b border-gray-300 flex justify-between items-center">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 mt-6">
-                            Product Inventory
+                            Orders
                         </h2>
-                        <Link to="/admin/add-products" className="rounded-full border-4 border-accent text-accent duration-300
-                                hover:bg-accent hover:text-white cursor-pointer text-4xl">
-                                <HiPlus />
-                        </Link>
                     </div>
 
                     {/* Table */}
@@ -68,7 +71,12 @@ export default function AdminOrdersPage(){
                                                     <td className="px-6 py-4">{order.date}</td>
                                                     <td className="px-6 py-4">{order.status}</td>
                                                     <td className="px-6 py-4">LKR.{order.total.toFixed(2)}</td>
-                                                    <td className="px-6 py-4">{order.items}</td>
+                                                    <td className="px-6 py-4">{ order.items.map((item,index)=>(
+                                                                                    <div key={index}>
+                                                                                    {item.name} x {item.quantity}
+                                                                                    </div>
+                                                                                ))}
+                                                    </td>
                                                     <td className="px-6 py-4"></td>
                                                    
                                                 </tr>
