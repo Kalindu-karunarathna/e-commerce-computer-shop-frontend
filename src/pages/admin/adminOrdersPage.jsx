@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../../components/loader";
+import OrdersInfo from "../../components/viewOrderInfo";
 
 
 export default function AdminOrdersPage(){
@@ -77,7 +78,7 @@ export default function AdminOrdersPage(){
                                                                                     </div>
                                                                                 ))}
                                                     </td>
-                                                    <td className="px-6 py-4"></td>
+                                                    <td className="px-6 py-4"><OrdersInfo order={order}/></td>
                                                    
                                                 </tr>
                                             );
