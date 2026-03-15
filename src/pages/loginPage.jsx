@@ -77,7 +77,7 @@ export default function LoginPage(){
 
 
             <div className="w-[50%] h-full flex justify-center items-center ">
-                <div className="flex max-h-[80%] flex-col justify-center px-6 py-12 lg:px-8 w-[450px]  backdrop-blur-lg rounded-2xl
+                <div className="flex max-h-[80%] flex-col justify-center px-6 py-12 lg:px-8 w-112.5  backdrop-blur-lg rounded-2xl
                     shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_15px_45px_rgba(0,0,0,0.45)] transition-shadow duration-300 ">
                         
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">

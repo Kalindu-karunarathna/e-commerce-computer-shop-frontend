@@ -31,6 +31,39 @@ export default function ProductOverview(){
         },[params.productId]
     )
 
+    const handleAddToCart = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        toast.error(`Please login to add ${product.name} to cart`);
+        navigate("/login");
+        return;
+    }
+
+    addToCart(product, 1);
+    };
+
+
+    const handleBuyNow = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        toast.error(`Please login to buy ${product.name}`);
+        navigate("/login");
+        return;
+    }
+
+    navigate("/checkout", {
+        state: [{
+        productId: product.productId,
+        name: product.name,
+        price: product.price,
+        labelPrice: product.labelPrice,
+        quantity: 1,
+        image: product.images[0]
+        }]
+    });
+};
+
+
     return(
         <>
             {status=="loading" && <Loader/>}
@@ -72,21 +105,14 @@ export default function ProductOverview(){
                         <div className="flex gap-4 mt-10">
                             {/* Add to Cart Button */}
                             <button className="flex-1 bg-white text-accent px-6 py-3 rounded-lg text-sm font-medium border border-accent shadow-md hover:bg-accent hover:text-white hover:shadow-lg transition-all duration-200 cursor-pointer"
-                            onClick={()=>{addToCart(product,1)}}>
+                            onClick={()=>{handleAddToCart()}}>
                                 Add to Cart
                             </button>
 
                             {/* Buy Now Button */}
                             <button className="flex-1 bg-white text-accent px-6 py-3 rounded-lg text-sm font-medium border border-accent shadow-md hover:bg-accent hover:text-white hover:shadow-lg transition-all duration-200 cursor-pointer"
                             onClick={()=>{
-                                navigate("/checkout",{state:[{
-                                    productId : product.productId,
-                                    name : product.name,
-                                    price : product.price,
-                                    labelPrice : product.labelPrice,
-                                    quantity : 1,
-                                    image : product.images[0]}
-                                ]})
+                                handleBuyNow()
                             }}>
                                 Buy Now
                             </button>

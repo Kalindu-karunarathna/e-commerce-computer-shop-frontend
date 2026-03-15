@@ -80,7 +80,7 @@ export default function UserData() {
           )}
         </div>
       ) : (
-        <div className="flex space-x-2">
+        <div className="flex space-x-8">
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
         </div>
