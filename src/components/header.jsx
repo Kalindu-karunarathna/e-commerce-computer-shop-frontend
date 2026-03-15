@@ -1,5 +1,6 @@
 import { BiShoppingBag } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
+import UserData from './userData'
 
 
 export default function Header(){
@@ -12,6 +13,9 @@ export default function Header(){
                 <Link to="/products">Products</Link>
                 <Link to="/about">About</Link>
                 <Link to="/contact">Contact</Link>
+                <div>
+                    <UserData/>
+                </div>
                 <Link to="/cart" className="text-2xl"><BiShoppingBag/></Link>
             </div>
         </header>
