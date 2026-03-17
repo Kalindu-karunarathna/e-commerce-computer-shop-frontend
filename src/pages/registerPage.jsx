@@ -49,34 +49,27 @@ export default function RegisterPage(){
 
 
         try{
-            const res = await axios.post(import.meta.env.VITE_BACKEND_URL+"/users/",{
+           await axios.post(import.meta.env.VITE_BACKEND_URL+"/users/",{
                     email : email.trim(),
                     password : password.trim(),
                     firstName:firstName.trim(),
                     lastName:lastName.trim()
                 });
-                console.log(res.data);
-
-                localStorage.setItem("token",res.data.token);
+               
                
 
-                toast.success("login successful! welcome..")
+                toast.success("Registration successful! welcome..")
 
                 setIsLoading(false);
 
-                if(res.data.role=="admin"){
-                   navigate("/admin")
-                }
-                else{
-                    navigate("/")
-                }
+                navigate("/login");
 
-               
+                setIsLoading(false);
 
         }catch(err){
             console.log("error during login : ")
             console.log(err);
-           toast.error("login failed! please try again.")
+           toast.error("Registration failed! please check your data and try again.")
            setIsLoading(false);
         }
     }
