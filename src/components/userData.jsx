@@ -55,6 +55,7 @@ export default function UserData() {
           >
             <img
               src={user.image}
+              referrerPolicy="no-referrer"
               alt="user"
               className="w-10 h-10 rounded-full border-2 border-accent"
             />
