@@ -86,6 +86,10 @@ export default function ProductOverview(){
                         <h1 className="text-3xl font-semibold text-gray-900">{product.name}</h1>
                         <h2 className="text-lg text-gray-600">{product.productId}</h2>
                         <h3 className="text-lg text-gray-600 flex items-center"><CgChevronRight/>{product.category}</h3>
+                        {product.altNames && product.altNames.length>0 && (
+                            <h3 className="text-lg text-gray-600 flex items-center">{product.altNames.join(" | ")}</h3>
+                        )}
+                        
                         <p className="text-md text-justify text-gray-600 h-32 overflow-y-auto">{product.description}</p>
 
                         {/* Example: Modern Price & Details */}
