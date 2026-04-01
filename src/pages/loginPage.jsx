@@ -33,7 +33,11 @@ export default function LoginPage(){
         })
         .catch((err) => {
         console.log(err);
-        toast.error("Google login failed!");
+        if (err.response?.data?.message) {
+            toast.error(err.response.data.message)
+        } else {
+            toast.error("Google Login failed! Please try again.")
+        }
         })
         .finally(() => {
         setIsLoading(false);
@@ -54,7 +58,7 @@ export default function LoginPage(){
     async function login(){
         console.log("login button clicked")
         console.log("email : ",email)
-        console.log("password : ",password)
+       
 
         setIsLoading(true)
 
@@ -81,8 +85,11 @@ export default function LoginPage(){
 
         }catch(err){
             console.log("error during login : ")
-            console.log(err);
-            toast.error("login failed! please try again.")
+            if (err.response?.data?.message) {
+            toast.error(err.response.data.message)
+            } else {
+                toast.error("Login failed! Please try again.")
+            }
             
         }finally{
             setIsLoading(false)
